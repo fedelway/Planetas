@@ -9,7 +9,7 @@ namespace Tests
     {
         public TestSetup()
         {
-            Configuration.Precision = 5;
+            Config.Precision = 5;
         }
     }
 }

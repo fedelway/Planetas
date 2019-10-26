@@ -63,7 +63,7 @@ namespace Planetas
 
         private static bool DoubleEquals(double a, double b)
         {
-            return a.EqualsPrecision(b, Configuration.Precision);
+            return a.EqualsPrecision(b, Config.Precision);
         }
     }
 }

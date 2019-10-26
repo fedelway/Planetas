@@ -64,7 +64,7 @@ namespace Planetas
         
         public bool Equals(CartesianCoordinates other, int precision)
         {
-            return X.EqualsPrecision(other.X, Configuration.Precision) && Y.EqualsPrecision(other.Y, precision);
+            return X.EqualsPrecision(other.X, Config.Precision) && Y.EqualsPrecision(other.Y, precision);
         }
 
         public static CartesianCoordinates operator +(CartesianCoordinates p1, CartesianCoordinates p2)

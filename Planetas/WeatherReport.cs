@@ -28,7 +28,7 @@ namespace Planetas
             double maxRainIntensity = 0;
             int maxIntensityDay = 0;
             int optimumCount = 0;
-            for (int day = 0; day < 365 * 10; day++)
+            for (int day = 0; day < daysToSimulate; day++)
             {
                 system.SimulateDay();
 
