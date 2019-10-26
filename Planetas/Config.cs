@@ -10,6 +10,7 @@ namespace Planetas
     {
         public static int Precision { get; set; }
         public static int DaysToSimulate { get; set; }
+        public static bool UploadToMongo { get; set; }
 
         public static void ReadConfigFile()
         {
@@ -20,24 +21,20 @@ namespace Planetas
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Could not open appSettings.json");
-                Console.ReadLine();
-                Environment.Exit(-1);
-                return;
+                throw new Exception("Could not open appSettings.json", ex);
             }
 
             try
             {
-                var def = new { doubleComparisonPrecision = 0, daysToSimulate = 0 };
+                var def = new { doubleComparisonPrecision = 0, daysToSimulate = 0, uploadToMongo = false };
                 var config = JsonConvert.DeserializeAnonymousType(json, def);
-                Config.Precision = config.doubleComparisonPrecision;
-                Config.DaysToSimulate = config.daysToSimulate;
+                Precision = config.doubleComparisonPrecision;
+                DaysToSimulate = config.daysToSimulate;
+                UploadToMongo = config.uploadToMongo;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error parsing json file");
-                Console.ReadLine();
-                Environment.Exit(-2);
+                throw new Exception("Error parsing json file", ex);
             }
         }
     }

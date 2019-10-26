@@ -11,9 +11,9 @@ namespace Planetas
         public double MaxRainIntensity { get; }
         public int MaxIntensityDay { get; }
         public int OptimumDays { get; }
-        public List<Weather> WeatherPerDay { get; }
+        public List<DayReport> WeatherPerDay { get; }
 
-        private WeatherReport(int draughtDays, int rainDays, double maxRainIntensity, int maxIntensityDay, int optimumDays, List<Weather> weatherPerDay)
+        private WeatherReport(int draughtDays, int rainDays, double maxRainIntensity, int maxIntensityDay, int optimumDays, List<DayReport> weatherPerDay)
         {
             DraughtDays = draughtDays;
             RainDays = rainDays;
@@ -25,29 +25,30 @@ namespace Planetas
 
         public static WeatherReport GenerateWeatherReport(SolarSystem system, int daysToSimulate)
         {
-            var weatherList = new List<Weather>();
+            var weatherList = new List<DayReport>();
             int draughtCount = 0;
             int rainCount = 0;
             double maxRainIntensity = 0;
             int maxIntensityDay = 0;
             int optimumCount = 0;
-            for (int day = 0; day < daysToSimulate; day++)
+            for (int day = 1; day <= daysToSimulate; day++)
             {
                 system.SimulateDay();
 
-                var weather = system.GetWeather();
-                switch (weather)
+                var weatherToday = system.GetWeather();
+                double intensityToday = 0;
+                switch (weatherToday)
                 {
                     case Weather.DRAUGHT:
                         draughtCount++;
                         break;
                     case Weather.RAINY:
                         rainCount++;
-                        var intensity = system.GetRainIntensity();
-                        if (intensity > maxRainIntensity)
+                        intensityToday = system.GetRainIntensity();
+                        if (intensityToday > maxRainIntensity)
                         {
                             maxIntensityDay = day;
-                            maxRainIntensity = intensity;
+                            maxRainIntensity = intensityToday;
                         }
                         break;
                     case Weather.OPTIMUM:
@@ -55,7 +56,7 @@ namespace Planetas
                         break;
                 }
 
-                weatherList.Add(weather);
+                weatherList.Add(new DayReport(weatherToday,intensityToday,day));
             }
 
             return new WeatherReport(draughtCount, rainCount, maxRainIntensity, maxIntensityDay, optimumCount, weatherList);

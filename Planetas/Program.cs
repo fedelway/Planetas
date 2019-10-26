@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.IO;
+using MongoDB.Driver;
 
 namespace Planetas
 {
@@ -9,7 +8,16 @@ namespace Planetas
     {
         static void Main(string[] args)
         {
-            Config.ReadConfigFile();
+            try
+            {
+                Config.ReadConfigFile();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.ReadLine();
+                return;
+            }
 
             Planet ferengi = new Planet(500, 0, 1, Planet.Direction.CLOCKWISE);
             Planet betasoide = new Planet(2000, 0, 3, Planet.Direction.CLOCKWISE);
@@ -26,6 +34,19 @@ namespace Planetas
             Console.WriteLine("Perídoos de lluvia: " + report.RainDays.ToString());
             Console.WriteLine("Períodos de optimo: " + report.OptimumDays.ToString());
             Console.WriteLine("Máxima intensidad de lluvias: " + report.MaxRainIntensity.ToString() + " en el día: " + report.MaxIntensityDay.ToString());
+
+            if(Config.UploadToMongo)
+            {
+                try
+                {
+                    var uploader = new ReportUploader(report);
+                    uploader.Upload();
+                    Console.WriteLine("Datos subidos a MongoDb Atlas exitosamente.");
+                }catch(Exception ex)
+                {
+                    Console.WriteLine("Falla al subir datos a MongoDb Atlas. " + ex.Message);
+                }                
+            }
 
             Console.ReadLine();
         }
