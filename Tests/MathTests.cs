@@ -6,13 +6,8 @@ using System.Collections.Generic;
 
 namespace Tests
 {
-    public class MathTests
+    public class MathTests : TestSetup
     {
-        public MathTests()
-        {
-            Configuration.Precision = 5;
-        }
-
         [Fact]
         public void GetAngleTest()
         {

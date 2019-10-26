@@ -7,7 +7,7 @@ using System.Numerics;
 
 namespace Tests
 {
-    public class PlanetTests
+    public class PlanetTests : TestSetup
     {
         [Fact]
         public void CarthesianCoordinatesTest()

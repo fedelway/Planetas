@@ -6,13 +6,8 @@ using Xunit;
 
 namespace Tests
 {
-    public class SolarSystemTests
+    public class SolarSystemTests : TestSetup
     {
-        public SolarSystemTests()
-        {
-            Configuration.Precision = 5;
-        }
-
         [Fact]
         public void PlanetsAlignedTest()
         {
