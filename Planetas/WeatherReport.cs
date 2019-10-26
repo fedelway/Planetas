@@ -11,18 +11,21 @@ namespace Planetas
         public double MaxRainIntensity { get; }
         public int MaxIntensityDay { get; }
         public int OptimumDays { get; }
+        public List<Weather> WeatherPerDay { get; }
 
-        private WeatherReport(int draughtDays, int rainDays, double maxRainIntensity, int maxIntensityDay, int optimumDays)
+        private WeatherReport(int draughtDays, int rainDays, double maxRainIntensity, int maxIntensityDay, int optimumDays, List<Weather> weatherPerDay)
         {
             DraughtDays = draughtDays;
             RainDays = rainDays;
             MaxRainIntensity = maxRainIntensity;
             MaxIntensityDay = maxIntensityDay;
             OptimumDays = optimumDays;
+            WeatherPerDay = weatherPerDay;
         }
 
         public static WeatherReport GenerateWeatherReport(SolarSystem system, int daysToSimulate)
         {
+            var weatherList = new List<Weather>();
             int draughtCount = 0;
             int rainCount = 0;
             double maxRainIntensity = 0;
@@ -32,7 +35,8 @@ namespace Planetas
             {
                 system.SimulateDay();
 
-                switch (system.GetWeather())
+                var weather = system.GetWeather();
+                switch (weather)
                 {
                     case Weather.DRAUGHT:
                         draughtCount++;
@@ -50,9 +54,11 @@ namespace Planetas
                         optimumCount++;
                         break;
                 }
+
+                weatherList.Add(weather);
             }
 
-            return new WeatherReport(draughtCount, rainCount, maxRainIntensity, maxIntensityDay, optimumCount);
+            return new WeatherReport(draughtCount, rainCount, maxRainIntensity, maxIntensityDay, optimumCount, weatherList);
         }
     }
 }
