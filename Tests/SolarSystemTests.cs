@@ -9,6 +9,19 @@ namespace Tests
     public class SolarSystemTests : TestSetup
     {
         [Fact]
+        public void ConstructorThrowsWhenPlanetListDoesNotHaveThreePlanets()
+        {
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var solarSystem = new SolarSystem(new List<Planet>()
+                {
+                    new Planet(10, 0, 0, Planet.Direction.CLOCKWISE),
+                    new Planet(20, 0, 0, Planet.Direction.CLOCKWISE)
+                });
+            });
+        }
+
+        [Fact]
         public void PlanetsAlignedTest()
         {
             var solarSystem = new SolarSystem(new List<Planet>()
@@ -48,7 +61,7 @@ namespace Tests
         }
 
         [Fact]
-        public void PlanetsNotAligned()
+        public void PlanetsNotAlignedReturnsFalse()
         {
             var p1 = new CartesianCoordinates(10, 10).ToPolar();
             var p2 = new CartesianCoordinates(0, 10).ToPolar();
@@ -62,6 +75,23 @@ namespace Tests
             });
 
             Assert.False(solarSystem.ArePlanetsAligned());
+        }
+
+        [Fact]
+        public void ArePlanetsAlignedReturnsTrueWhenAngleIsZero()
+        {
+            var p1 = new CartesianCoordinates(-1, 1).ToPolar();
+            var p2 = new CartesianCoordinates(0, 1).ToPolar();
+            var p3 = new CartesianCoordinates(1, 1).ToPolar();
+
+            var solarSystem = new SolarSystem(new List<Planet>()
+            {
+                new Planet(p1.Length, p1.Angle.ToDegrees(), 0, Planet.Direction.CLOCKWISE),
+                new Planet(p2.Length, p2.Angle.ToDegrees(), 0, Planet.Direction.CLOCKWISE),
+                new Planet(p3.Length, p3.Angle.ToDegrees(), 0, Planet.Direction.CLOCKWISE),
+            });
+
+            Assert.True(solarSystem.ArePlanetsAligned());
         }
 
         [Fact]

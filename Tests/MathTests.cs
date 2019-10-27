@@ -68,6 +68,18 @@ namespace Tests
         }
 
         [Fact]
+        public void IsPointInsideTriangleThrowsWhenListDoesNotContainThreeElements()
+        {
+            Assert.Throws<ArgumentException>( () =>
+            {
+                MathUtils.IsPointInsideTriangle(new CartesianCoordinates(0, 0), new List<CartesianCoordinates>()
+                {
+                    new CartesianCoordinates(1,1)
+                });
+            });
+        }
+
+        [Fact]
         public void PrecisionEqualsTest()
         {
             Assert.True((0.0000000000001).EqualsPrecision(0, 5));

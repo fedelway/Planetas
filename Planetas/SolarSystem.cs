@@ -13,6 +13,11 @@ namespace Planetas
 
         public SolarSystem(List<Planet> planetList)
         {
+            if(planetList.Count != 3)
+            {
+                throw new ArgumentException("Planet list should have 3 planets");
+            }
+
             this.planetList = planetList;
             this.dayCount = 0;
         }
