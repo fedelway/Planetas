@@ -25,14 +25,14 @@ namespace Planetas
             bool negativeAngleEquals;
             if(angle1 > angle2)
             {
-                negativeAngleEquals = DoubleEquals(angle1,NormalizeAngle(angle2 + Math.PI));
+                negativeAngleEquals = NormalizedAnglesEquals(angle1,NormalizeAngle(angle2 + Math.PI));
             }
             else
             {
-                negativeAngleEquals = DoubleEquals(NormalizeAngle(angle1 + Math.PI), angle2);
+                negativeAngleEquals = NormalizedAnglesEquals(NormalizeAngle(angle1 + Math.PI), angle2);
             }
 
-            return DoubleEquals(angle1, angle2) || negativeAngleEquals;
+            return NormalizedAnglesEquals(angle1, angle2) || negativeAngleEquals;
         }
 
         public static bool LineFromTwoPointPassesOrigin(CartesianCoordinates p1, CartesianCoordinates p2)
@@ -64,6 +64,16 @@ namespace Planetas
         private static bool DoubleEquals(double a, double b)
         {
             return a.EqualsPrecision(b, Config.Precision);
+        }
+
+        //Calculates if the angles are equal considering the Precision.
+        private static bool NormalizedAnglesEquals(double a, double b)
+        {
+            double epsilon = 1 / Math.Pow(10, Config.Precision);
+
+            Func<double,bool> isWithinEpsilon = (val => val < epsilon || val > (Math.PI * 2) - epsilon);
+
+            return DoubleEquals(a, b) || ( isWithinEpsilon(a) && isWithinEpsilon(b) );
         }
     }
 }
