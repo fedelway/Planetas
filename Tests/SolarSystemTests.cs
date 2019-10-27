@@ -117,7 +117,7 @@ namespace Tests
                 new Planet(30,30,0,Planet.Direction.CLOCKWISE)
             });
 
-            Assert.Equal(Weather.DRAUGHT, solarSystem.CalculateWeather());
+            Assert.Equal(Weather.WeatherType.DRAUGHT, solarSystem.CalculateWeather().Type);
         }
 
         [Fact]
@@ -133,7 +133,7 @@ namespace Tests
                 new Planet(p3.ToPolar().Length,p3.ToPolar().Angle.ToDegrees(),0,Planet.Direction.CLOCKWISE)
             });
 
-            Assert.Equal(Weather.OPTIMUM, solarSystem.CalculateWeather());
+            Assert.Equal(Weather.WeatherType.OPTIMUM, solarSystem.CalculateWeather().Type);
         }
 
         [Fact]
@@ -146,7 +146,7 @@ namespace Tests
                 new Planet(30,260,0,Planet.Direction.CLOCKWISE)
             });
 
-            Assert.Equal(Weather.RAINY, solarSystem.CalculateWeather());
+            Assert.Equal(Weather.WeatherType.RAINY, solarSystem.CalculateWeather().Type);
         }
 
         [Fact]
@@ -159,7 +159,7 @@ namespace Tests
                 new Planet(30,90,0,Planet.Direction.CLOCKWISE)
             });
 
-            Assert.Equal(Weather.NORMAL, solarSystem.CalculateWeather());
+            Assert.Equal(Weather.WeatherType.NORMAL, solarSystem.CalculateWeather().Type);
         }
     }
 }

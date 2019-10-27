@@ -40,17 +40,17 @@ namespace Planetas
                     planetList[0].PolarPosition.ToCartesian(),
                     planetList[1].PolarPosition.ToCartesian()))
                 {
-                    return Weather.DRAUGHT;
+                    return Weather.CreateDraught();
                 }
-                else return Weather.OPTIMUM;
+                else return Weather.CreateOptimum();
             }
 
             if(MathUtils.IsPointInsideTriangle(new CartesianCoordinates(0,0), planetList.Select(p => p.PolarPosition.ToCartesian() ).ToList()))
             {
-                return Weather.RAINY;
+                return Weather.CreateRainy(this.GetRainIntensity());
             }
 
-            return Weather.NORMAL;
+            return Weather.CreateNormal();
         }
         
         public double GetRainIntensity()

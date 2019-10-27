@@ -29,11 +29,16 @@ namespace Planetas
                 cm.MapMember(c => c.OptimumDays);
             });
 
+            BsonClassMap.RegisterClassMap<Weather>(cm =>
+            {
+                cm.MapMember(c => c.Type).SetSerializer(new EnumSerializer<Weather.WeatherType>(BsonType.String));
+                cm.MapMember(c => c.RainIntensity);
+            });
+
             BsonClassMap.RegisterClassMap<DayReport>(cm =>
             {
                 cm.MapMember(c => c.Day);
-                cm.MapMember(c => c.RainIntensity);
-                cm.MapMember(c => c.Weather).SetSerializer(new EnumSerializer<Weather>(BsonType.String));
+                cm.MapMember(c => c.Weather);
             });
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Planetas
@@ -28,36 +29,30 @@ namespace Planetas
             var weatherList = new List<DayReport>();
             int draughtCount = 0;
             int rainCount = 0;
-            double maxRainIntensity = 0;
-            int maxIntensityDay = 0;
             int optimumCount = 0;
             for (int day = 1; day <= daysToSimulate; day++)
             {
                 system.SimulateDay();
 
                 var weatherToday = system.CalculateWeather();
-                double intensityToday = 0;
-                switch (weatherToday)
+                switch (weatherToday.Type)
                 {
-                    case Weather.DRAUGHT:
+                    case Weather.WeatherType.DRAUGHT:
                         draughtCount++;
                         break;
-                    case Weather.RAINY:
+                    case Weather.WeatherType.RAINY:
                         rainCount++;
-                        intensityToday = system.GetRainIntensity();
-                        if (intensityToday > maxRainIntensity)
-                        {
-                            maxIntensityDay = day;
-                            maxRainIntensity = intensityToday;
-                        }
                         break;
-                    case Weather.OPTIMUM:
+                    case Weather.WeatherType.OPTIMUM:
                         optimumCount++;
                         break;
                 }
 
-                weatherList.Add(new DayReport(weatherToday,intensityToday,day));
+                weatherList.Add(new DayReport(weatherToday,day));
             }
+
+            var maxRainIntensity = weatherList.Max(r => r.Weather.RainIntensity);
+            var maxIntensityDay = weatherList.Where(r => r.Weather.RainIntensity == maxRainIntensity).First().Day;
 
             return new WeatherReport(draughtCount, rainCount, maxRainIntensity, maxIntensityDay, optimumCount, weatherList);
         }

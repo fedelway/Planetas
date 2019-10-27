@@ -39,6 +39,7 @@ namespace Planetas
             {
                 try
                 {
+                    Console.WriteLine("Subiendo datos a MongoDb...");
                     var uploader = new ReportUploader(report);
                     uploader.Upload();
                     Console.WriteLine("Datos subidos a MongoDb Atlas exitosamente.");
