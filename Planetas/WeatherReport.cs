@@ -35,7 +35,7 @@ namespace Planetas
             {
                 system.SimulateDay();
 
-                var weatherToday = system.GetWeather();
+                var weatherToday = system.CalculateWeather();
                 double intensityToday = 0;
                 switch (weatherToday)
                 {

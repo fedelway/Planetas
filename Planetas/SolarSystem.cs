@@ -26,7 +26,7 @@ namespace Planetas
             dayCount++;
         }
 
-        public Weather GetWeather()
+        public Weather CalculateWeather()
         {
             if (ArePlanetsAligned())
             {
