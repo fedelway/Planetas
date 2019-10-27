@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using MongoDB.Driver;
+using System.IO;
 
 namespace Planetas
 {
@@ -10,7 +10,7 @@ namespace Planetas
         {
             try
             {
-                Config.ReadConfigFile();
+                Config.ReadJson(ReadConfigFile());
             }
             catch(Exception ex)
             {
@@ -49,6 +49,18 @@ namespace Planetas
             }
 
             Console.ReadLine();
+        }
+
+        public static string ReadConfigFile()
+        {
+            try
+            {
+                return File.ReadAllText("appSettings.json");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not open appSettings.json", ex);
+            }
         }
     }
 }

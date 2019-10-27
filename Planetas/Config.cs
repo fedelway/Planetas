@@ -12,29 +12,31 @@ namespace Planetas
         public static int DaysToSimulate { get; set; }
         public static bool UploadToMongo { get; set; }
 
-        public static void ReadConfigFile()
+        public static void ReadJson(string json)
         {
-            string json;
             try
             {
-                json = File.ReadAllText("appSettings.json");
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Could not open appSettings.json", ex);
-            }
+                int? nullableInt = 0;
+                bool? nullableBool = false;
+                var def = new { doubleComparisonPrecision = nullableInt, daysToSimulate = nullableInt, uploadToMongo = nullableBool };
 
-            try
-            {
-                var def = new { doubleComparisonPrecision = 0, daysToSimulate = 0, uploadToMongo = false };
-                var config = JsonConvert.DeserializeAnonymousType(json, def);
-                Precision = config.doubleComparisonPrecision;
-                DaysToSimulate = config.daysToSimulate;
-                UploadToMongo = config.uploadToMongo;
+                var config = JsonConvert.DeserializeAnonymousType(json, def, new JsonSerializerSettings()
+                {
+                    MissingMemberHandling = MissingMemberHandling.Error
+                });
+
+                if(config.daysToSimulate == null || config.doubleComparisonPrecision == null || config.uploadToMongo == null)
+                {
+                    throw new Exception("Incomplete json");
+                }
+
+                Precision = config.doubleComparisonPrecision.Value;
+                DaysToSimulate = config.daysToSimulate.Value;
+                UploadToMongo = config.uploadToMongo.Value;
             }
             catch (Exception ex)
             {
-                throw new Exception("Error parsing json file", ex);
+                throw new Exception("Error parsing json", ex);
             }
         }
     }
