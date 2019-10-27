@@ -9,14 +9,15 @@ resultados de la simulación.
 
 En la carpeta donde ejecuta el programa debe existir el archivo 
 "appSettings.json". Aquí irá la configuración de la simulación.
+
 Ejemplo:
-´´´
+```
 {
   "doubleComparisonPrecision": 5,
   "daysToSimulate": 3650,
   "uploadToMongo": true
 }
-´´´
+```
 
 * doubleComparisonPrecision: Marca con qué precisión se harán las 
 comparaciones de double.
