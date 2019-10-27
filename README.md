@@ -58,5 +58,37 @@ class SistemaSolar{
 }
 ```
 
-Para modelar el Clima utilicé un simple enum. Podría haber utilizado una clase Clima subclaseando por tipo de clima, pero al no tener ningún comportamiento diferencial entre los mismos, no me pareció una buena solución. Los tipos de climas son los que menciona el enunciado, más el tipo de clima "NORMAL" que aparece cuando no se cumple ninguna de las condiciones de los otros climas.
+Para modelar el Clima utilicé una clase que posee un enum con el tipo de clima y la intensidad de la lluvia. Utilicé el patrón Factory Method para construir Climas válidos. Esto es porque la intensidad de la lluvia solo aparece para el clima "lluvioso", por lo tanto, los otros climas deberían no tener intensidad. Para evitar complicaciones, consideré que los otros climas tienen una intensidad de lluvia = 0. De esta forma, con el Factory Method, sería imposible generar un objeto con tipo de clima sequía y una intensidad de lluvia distinta de 0.
 
+```
+class Clima{
+  TipoClima tipo;
+  intensidad de lluvia;
+}
+```
+
+Por último generé una clase ReporteClima que realiza una simulación dado un sistema solar y la cantidad de dias a simular, y genera el reporte con el clima que se da en cada día y las estadísticas de cuantos días hubo de cada clima.
+
+## Problemas encontrados
+
+Uno de los primeros problemas con los que me encontré fue encontrar un librería que trabaje con coordenadas cartesianas y polares tal cual necesitaba. 
+
+Lo que más se aproximaba dentro de las librerías estándar de .Net era la clase Vector2. Comencé a resolver el problema modelando las coordenadas como instancias de Vector2 pero llegue a la limitación de que necesitaba convertir de coordenadas polares y cartesianas, y viceversa. 
+
+Las librerías de terceros de álgebra lineal y matemáticas resultaban muy complicadas de utilizar. Las más apropiadas eran librerías de gráficos por computadoras, pero no se justificaba importar todo un motor gráfico para utilizar solo un puñado de clases y métodos.
+
+Por esto mismo es que decidí refactorizar y crear mis propias clases "CartesianCoordinates" y "PolarCoordinates". No fue algo muy complicado, y luego tuvo su resultado positivo.
+
+Otra razón que me motivó a realizar el cambio, fue que la precisión de "float" no se ajustaba a las necesidades del problema y se necesitaba utilizar "double" (algo imposible con Vector2). Aún así, utilizando "double" seguí experimentando problemas la precisión y tuve que truncar los dígitos decimales. De otra manera, tras las conversiones entre coordenadas cartesianas y polares, los errores de redondeo generaban que no se valide la igualdad.
+
+Lo mismo ocurrió con valores muy cercanos a cero. Si un ángulo muy cercano a cero se comparaba con otro tambien muy cercano a cero pero negativo, la igualdad no verificaba.
+
+# Resolución Bonus
+
+Para el bonus consideré utilizar una base de datos NoSql. Al no tener esquema, suele ser mucho más fácil persistir datos del modelo de clases. Además, considerando que no es necesaria una alta consistencia y siendo únicamente una API de consulta, una base de datos NoSql se adaptaba bien a mis necesidades.
+
+En particular elegí MongoDb porque lo he utilizado un par de veces y sé que tiene drivers para todos los lenguajes populares. Además, sé que existe una solución Cloud de mongo, Atlas, que es muy fácil de utilizar y configurar.
+
+En cuanto a la API rest, la implementé utilizando NodeJS con Express. La pude haber hecho en .Net pero no había ningún motivo para hacerlo, porque la API esta totalmente separada de la lógica de generación de la simulación y los resultados. Además, existen muchas soluciones Cloud para hostear API's en Node.
+
+Para hostear la api utilice Google Firebase Functions. Adaptar la aplicación original de Node no requerió de mucho esfuerzo adicional porque Firebase tiene soporte directo para Express.
