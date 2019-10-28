@@ -4,11 +4,13 @@ Resolución ejercicio Planetas de meli.
 
 # Uso
 
-Simplemente se debe ejecutar "Planetas.exe" y mostrará por consola los 
-resultados de la simulación.
+Simplemente nos paramos sobre la carpeta "Planetas" (donde se encuentra "Planetas.csproj") y ejecutamos:
+```
+dotnet run
+```
+El programa se compilará y ejecutará dando como resultado el reporte del clima.
 
-En la carpeta donde ejecuta el programa debe existir el archivo 
-"appSettings.json". Aquí irá la configuración de la simulación.
+En la carpeta donde ejecuta el programa debe existir el archivo "appSettings.json". Aquí irá la configuración de la simulación.
 
 Ejemplo:
 ```
